@@ -1,6 +1,5 @@
 numpy
 pandas
-tensorflow
 scikit-learn==0.24.2
 plotly==5.3.1
 keras==2.6.0
