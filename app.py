@@ -228,7 +228,7 @@ def process_case(df, case_number, model_path):
     y_test = test_inputs['target']
 
     # Caricare il modello specifico per il caso corrente
-    model = load_model(model_path.format(case_number))
+    model = load_model(model_path)
 
     # Codice di adattamento per variabile binaria
     predictions = model.predict(X_test)
