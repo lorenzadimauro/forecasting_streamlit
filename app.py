@@ -139,95 +139,95 @@ T = 6
 tensor_structure = {'X':(range(-T+1, 1), all_features)}
 
 def convert_order_date(df):
-  df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d %H:%M:%S')
-  df = df.sort_values(by='date')
-  df.set_index('date', inplace=True)
-  return df
+    df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d %H:%M:%S')
+    df = df.sort_values(by='date')
+    df.set_index('date', inplace=True)
+    return df
 
 def import_dataset(df_path):
-  df = pd.read_csv(df_path, sep=",")
-  df = convert_order_date(df)
-  if df_path == "datasets/grazzanise_gru.csv":
-    df.columns.name = 'grazzanise'
-  elif df_path == "datasets/trapani_gru.csv":
-    df.columns.name = 'trapani'
-  else:
-    df.columns.name = 'treviso'
-  return df
+    df = pd.read_csv(df_path, sep=",")
+    df = convert_order_date(df)
+    if df_path == "datasets/grazzanise_gru.csv":
+        df.columns.name = 'grazzanise'
+    elif df_path == "datasets/trapani_gru.csv":
+        df.columns.name = 'trapani'
+    else:
+        df.columns.name = 'treviso'
+    return df
 
 def colum_timeseries(df, column):
-  fig_title = df.columns.name + ' ' + column + ' time series'
-  fig = px.line(df, x=df.index , y=column, title=fig_title, color_discrete_sequence= ["darkblue"], template='plotly_white')
-  fig.update_xaxes(rangeslider_visible=True)
-  st.plotly_chart(fig)
-  return
+    fig_title = df.columns.name + ' ' + column + ' time series'
+    fig = px.line(df, x=df.index , y=column, title=fig_title, color_discrete_sequence= ["darkblue"], template='plotly_white')
+    fig.update_xaxes(rangeslider_visible=True)
+    st.plotly_chart(fig)
+    return
 
 def column_barchart(df, column):
-  fig_title = df.columns.name + ' ' + column + ' barchart'
-  fig = px.histogram(df, x=column, title=fig_title, color_discrete_sequence= ["navy"], template='plotly_white')
-  st.plotly_chart(fig)
-  return
+    fig_title = df.columns.name + ' ' + column + ' barchart'
+    fig = px.histogram(df, x=column, title=fig_title, color_discrete_sequence= ["navy"], template='plotly_white')
+    st.plotly_chart(fig)
+    return
 
 def plot_graphs(df):
-  num_columns = ['pressure', 'temperature_diff']
-  cat_columns = ['cloud_cover', 'cloud_type']
+    num_columns = ['pressure', 'temperature_diff']
+    cat_columns = ['cloud_cover', 'cloud_type']
 
-  for num_col in num_columns:
-    colum_timeseries(df, num_col)
-  for cat_col in cat_columns:
-    column_barchart(df, cat_col)
-  return
+    for num_col in num_columns:
+        colum_timeseries(df, num_col)
+    for cat_col in cat_columns:
+        column_barchart(df, cat_col)
+    return
 
 def dataset_scaling(df):
-  train_start_dt = df.index.min()
-  valid_start_dt = train_start_dt + pd.DateOffset(years=7)
-  test_start_dt = valid_start_dt + pd.DateOffset(years=2)
+    train_start_dt = df.index.min()
+    valid_start_dt = train_start_dt + pd.DateOffset(years=7)
+    test_start_dt = valid_start_dt + pd.DateOffset(years=2)
 
-  train = df.copy()[df.index < valid_start_dt][all_features]
-  X_scaler = MinMaxScaler()
-  num_columns = ['pressure', 'three_hour_pressure_change', 'wind_direction',
+    train = df.copy()[df.index < valid_start_dt][all_features]
+    X_scaler = MinMaxScaler()
+    num_columns = ['pressure', 'three_hour_pressure_change', 'wind_direction',
                'wind_speed', 'cloud_cover', 'temperature_diff']
-  train[num_columns] = X_scaler.fit_transform(train[num_columns])
+    train[num_columns] = X_scaler.fit_transform(train[num_columns])
 
-  look_back_dt = test_start_dt - dt.timedelta(hours=T-1)
-  test = df.copy()[look_back_dt:][all_features]
-  test[num_columns] = X_scaler.transform(test[num_columns])
-  return test
+    look_back_dt = test_start_dt - dt.timedelta(hours=T-1)
+    test = df.copy()[look_back_dt:][all_features]
+    test[num_columns] = X_scaler.transform(test[num_columns])
+    return test
 
 def dataset_scaling_grazzanise(df):
-  test_start_dt = dt.datetime.strptime("2021-11-30 07:00:00", "%Y-%m-%d %H:%M:%S")
-  look_back_dt = test_start_dt - dt.timedelta(hours=T-1)
-  test = df.copy()[test_start_dt:][all_features]
-  num_columns = ['pressure', 'three_hour_pressure_change', 'wind_direction',
+    test_start_dt = dt.datetime.strptime("2021-11-30 07:00:00", "%Y-%m-%d %H:%M:%S")
+    look_back_dt = test_start_dt - dt.timedelta(hours=T-1)
+    test = df.copy()[test_start_dt:][all_features]
+    num_columns = ['pressure', 'three_hour_pressure_change', 'wind_direction',
                'wind_speed', 'cloud_cover', 'temperature_diff']
 
-  X_scaler = MinMaxScaler()
-  test[num_columns] = X_scaler.fit_transform(test[num_columns])
-  return test
+    X_scaler = MinMaxScaler()
+    test[num_columns] = X_scaler.fit_transform(test[num_columns])
+    return test
 
 def dataset_preparation(df):
-  df = df.drop(columns= ['idstazione', 'visibility'])
-  # codifico fog
-  df['FOG'] = df['FOG'].map({'NO': 0, 'YES': 1})
-  df_copy = df.copy()
-  cat_columns = ['present_weather', 'cloud_type']
-  df = pd.get_dummies(df, columns=cat_columns, drop_first=True)
-  
-  if df.columns.name == 'grazzanise':
-    test = dataset_scaling_grazzanise(df)   
-  
-  else:
-    test = dataset_scaling(df)
-  
-  return test, df_copy
+    df = df.drop(columns= ['idstazione', 'visibility'])
+    # codifico fog
+    df['FOG'] = df['FOG'].map({'NO': 0, 'YES': 1})
+    df_copy = df.copy()
+    cat_columns = ['present_weather', 'cloud_type']
+    df = pd.get_dummies(df, columns=cat_columns, drop_first=True)
+    
+    if df.columns.name == 'grazzanise':
+        test = dataset_scaling_grazzanise(df)   
+    else:
+        test = dataset_scaling(df)
+    
+    return test, df_copy
 
-def process_case(df, case_number, model_path):
+def process_case(df, case_number, model_path_template):
     # Creare il TimeSeriesTensor per il caso corrente
     test_inputs = TimeSeriesTensor(df, 'FOG', case_number, tensor_structure)
     X_test = test_inputs['X']
     y_test = test_inputs['target']
 
     # Caricare il modello specifico per il caso corrente
+    model_path = model_path_template.format(case_number)
     model = load_model(model_path)
 
     # Codice di adattamento per variabile binaria
@@ -241,27 +241,27 @@ def process_case(df, case_number, model_path):
     return result_df
 
 def dataset_evaluation(test, df_copy):
-  
-  # Creare una lista che contiene copy + i risultati dei sei casi
-  result_dfs = [df_copy]
-  # Utilizzare la funzione per ciascun caso
-  for case_number in range(1, 7):
-    model_path = "/content/model_{}.h5"
-    result_df = process_case(test, case_number, model_path)
+    # Creare una lista che contiene copy + i risultati dei sei casi
+    result_dfs = [df_copy]
+    model_path_template = "/content/model_{}.h5"
+    # Utilizzare la funzione per ciascun caso
+    for case_number in range(1, 7):
+    
+    result_df = process_case(test, case_number, model_path_template)
     result_dfs.append(result_df)
-
-  return result_dfs
+    
+    return result_dfs
 
 def create_eval_df(results, range_size):
     if range_size > len(results) or range_size < 1:
         raise ValueError("Il range specificato è fuori dal limite dei risultati.")
 
     eval_df = results[0]  # Inizia con il primo DataFrame
-
+    
     for i in range(1, range_size+1):
         # Effettua l'inner join con il DataFrame successivo
         eval_df = pd.merge(eval_df, results[i], left_index=True, right_index=True, how='inner')
-
+    
     return eval_df
 
 def main():
