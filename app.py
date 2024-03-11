@@ -271,9 +271,11 @@ def main():
     grazzanise = import_dataset("datasets/grazzanise_gru.csv")
     trapani = import_dataset("datasets/trapani_gru.csv")
     treviso = import_dataset("datasets/treviso_gru.csv")
-
-    # User selects one of the three datasets from a drop-down menu -> selected_df
-    selected_df = st.selectbox("Select Dataset", [grazzanise, trapani, treviso])
+    
+    datasets = [grazzanise, trapani, treviso]
+    selectable_elements = [df.columns.name for df in datasets]
+    selected_df_name = st.selectbox("Select Dataset", selectable_elements)
+    selected_df = datasets[selectable_elements.index(selected_df_name)]
 
     # Function for plotting graphs is called
     plot_graphs(selected_df)
