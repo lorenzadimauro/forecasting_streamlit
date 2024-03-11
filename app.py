@@ -246,9 +246,8 @@ def dataset_evaluation(test, df_copy):
     model_path_template = "/content/model_{}.h5"
     # Utilizzare la funzione per ciascun caso
     for case_number in range(1, 7):
-    
-    result_df = process_case(test, case_number, model_path_template)
-    result_dfs.append(result_df)
+        result_df = process_case(test, case_number, model_path_template)
+        result_dfs.append(result_df)
     
     return result_dfs
 
