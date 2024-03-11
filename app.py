@@ -243,7 +243,7 @@ def process_case(df, case_number, model_path_template):
 def dataset_evaluation(test, df_copy):
     # Creare una lista che contiene copy + i risultati dei sei casi
     result_dfs = [df_copy]
-    model_path_template = "/content/model_{}.h5"
+    model_path_template = "models/model_{}.h5"
     # Utilizzare la funzione per ciascun caso
     for case_number in range(1, 7):
         result_df = process_case(test, case_number, model_path_template)
