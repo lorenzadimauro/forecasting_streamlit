@@ -3,8 +3,7 @@ import warnings
 import numpy as np
 import pandas as pd
 import datetime as dt
-import tensorflow as tf
-import matplotlib.pyplot as plt
+#import tensorflow as tf
 import plotly.express as px
 
 from collections import UserDict
@@ -15,8 +14,6 @@ from keras.metrics import AUC, Recall
 from keras.callbacks import EarlyStopping
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score
-
-%matplotlib inline
 
 pd.options.display.float_format = '{:,.2f}'.format
 np.set_printoptions(precision=2)
