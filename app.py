@@ -7,13 +7,10 @@ import datetime as dt
 import plotly.express as px
 
 from collections import UserDict
-from keras.models import Model, Sequential, load_model
-from keras.layers import GRU, Dense, Dropout
-from keras.optimizers import Adam
-from keras.metrics import AUC, Recall
+from keras.models import load_model
 from keras.callbacks import EarlyStopping
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score
+#from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score
 
 pd.options.display.float_format = '{:,.2f}'.format
 np.set_printoptions(precision=2)
