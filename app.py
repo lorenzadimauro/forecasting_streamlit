@@ -229,6 +229,7 @@ def process_case(df, case_number, model_path_template):
     # Caricare il modello specifico per il caso corrente
     model_path = model_path_template.format(case_number)
     model = load_model(model_path)
+    model._make_predict_function()
 
     # Codice di adattamento per variabile binaria
     predictions = model.predict(X_test)
