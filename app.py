@@ -39,7 +39,11 @@ def plot_graphs(df):
         column_barchart(df, cat_col)
     return
 
-
+def colors(val, soglia):
+    if float(val) > soglia:
+        return "color: red"
+    else:
+        return "color: black"
 
 def main():
     st.title("FOG NOWCASTING APP")
@@ -69,10 +73,11 @@ def main():
         
       # This function is called
       eval_df = import_dataset(eval_path)
+      st.subheader("Alert threshold: Fog Probability > 70%)")
       # Apply custom styling to highlight values > 70 in red for specific columns
       def style_specific_columns(col):
           if 'fog prob t+' in col:
-              return ['color: red' if v > 70 else '' for v in col]
+              return col.style.applymap(lambda x: colors(x, 70))
           return ['' for _ in col]
         
       eval_df_styled = eval_df.style.apply(style_specific_columns)
