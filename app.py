@@ -71,10 +71,10 @@ def main():
       st.subheader("Alert threshold: Fog Probability > 70%")
       # Apply custom styling to highlight values > 70 in red for specific columns
       def style_specific_columns(col):
-          if 'fog prob t+' in col:
-              st.subheader("bufbguhfidhf")
+          print("Column Name:", col.name)
+          if 'fog prob t+' in col.name:
               return ['color: red' if v > 70 else '' for v in col]
-          return ['' for _ in col]
+          return ['' for _ in col
         
       eval_df_styled = eval_df.style.apply(style_specific_columns)
         
