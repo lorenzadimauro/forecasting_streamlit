@@ -69,9 +69,19 @@ def main():
         
       # This function is called
       eval_df = import_dataset(eval_path)
+      # Apply custom styling to highlight values > 70 in red for specific columns
+      def style_specific_columns(col):
+          if 'fog prob t+' in col:
+              return ['color: red' if v > 70 else '' for v in col]
+          return ['' for _ in col]
+        
+      eval_df_styled = eval_df.style.apply(style_specific_columns)
+        
+      # Display eval_df with custom styling
+      st.write(eval_df_styled)
         
       # Display eval_df
-      st.dataframe(eval_df)
+      #st.dataframe(eval_df)
 
 # Run the Streamlit app
 if __name__ == "__main__":
