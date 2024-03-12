@@ -7,8 +7,7 @@ import tensorflow as tf
 import plotly.express as px
 
 from collections import UserDict
-from keras.models import load_model
-from keras.callbacks import EarlyStopping
+from tf.keras.saving import load_model
 from sklearn.preprocessing import MinMaxScaler
 #from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score
 
