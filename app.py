@@ -5,9 +5,10 @@ import pandas as pd
 import datetime as dt
 import tensorflow as tf
 import plotly.express as px
+import pickle
 
 from collections import UserDict
-from tf.keras.saving import load_model
+#from keras.model import load_model
 from sklearn.preprocessing import MinMaxScaler
 #from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score
 
@@ -227,8 +228,7 @@ def process_case(df, case_number, model_path_template):
 
     # Caricare il modello specifico per il caso corrente
     model_path = model_path_template.format(case_number)
-    model = load_model(model_path)
-    model._make_predict_function()
+    model = pickle.load(open(model_path, 'rb'))
 
     # Codice di adattamento per variabile binaria
     predictions = model.predict(X_test)
@@ -243,7 +243,7 @@ def process_case(df, case_number, model_path_template):
 def dataset_evaluation(test, df_copy):
     # Creare una lista che contiene copy + i risultati dei sei casi
     result_dfs = [df_copy]
-    model_path_template = "models/model_{}.h5"
+    model_path_template = "models/model_{}.pkl"
     # Utilizzare la funzione per ciascun caso
     for case_number in range(1, 7):
         result_df = process_case(test, case_number, model_path_template)
