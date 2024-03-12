@@ -74,12 +74,12 @@ def main():
           print("Column Name:", col.name)
           if 'fog prob t+' in col.name:
               return ['color: red' if v > 70 else '' for v in col]
-          return ['' for _ in col
+          return ['' for _ in col]
         
       eval_df_styled = eval_df.style.apply(style_specific_columns)
         
       # Display eval_df with custom styling
-      st.dataframe(eval_df_styled)
+      st.write(eval_df_styled)
         
       # Display eval_df
       #st.dataframe(eval_df)
