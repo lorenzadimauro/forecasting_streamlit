@@ -64,7 +64,7 @@ def main():
     # Button to prepare dataset
     if st.button("Test on selected dataset"):
 
-      eval_path_template = "evaluation/eval_df_{}"
+      eval_path_template = "evaluation/eval_df_{}.csv"
       eval_path = eval_path_template.format(selected_df.columns.name)
         
       # This function is called
