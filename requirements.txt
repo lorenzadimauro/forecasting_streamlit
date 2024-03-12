@@ -4,3 +4,4 @@ scikit-learn
 plotly==5.3.1
 tensorflow
 keras
+pickle
