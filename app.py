@@ -48,7 +48,7 @@ def main():
         <style>
         body {
             color: white;
-            background-color: #001730;
+            background-color: #001F3F;
         }
         </style>
         """,
