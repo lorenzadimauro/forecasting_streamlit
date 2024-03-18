@@ -42,6 +42,18 @@ def plot_graphs(df):
 
 def main():
     st.title("FOG NOWCASTING APP")
+    # Change background color to blue night with white text
+    st.markdown(
+        """
+        <style>
+        body {
+            color: white;
+            background-color: #001730;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
     # Datasets are imported
     grazzanise = import_dataset("datasets/grazzanise_gru.csv")
@@ -76,7 +88,6 @@ def main():
               return ['color: red' if v > 70 else '' for v in col]
           return ['' for _ in col]
         
-      eval_df = eval_df.round(2)
       eval_df_styled = eval_df.style.apply(style_specific_columns)
         
       # Display eval_df with custom styling
