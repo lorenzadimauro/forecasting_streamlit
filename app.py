@@ -18,14 +18,14 @@ def import_dataset(df_path):
 
 def colum_timeseries(df, column):
     fig_title = df.columns.name + ' ' + column + ' time series'
-    fig = px.line(df, x=df.index , y=column, title=fig_title, color_discrete_sequence= ["darkblue"], template='plotly_white')
+    fig = px.line(df, x=df.index , y=column, title=fig_title, color_discrete_sequence= ["royalblue"], template='plotly_white')
     fig.update_xaxes(rangeslider_visible=True)
     st.plotly_chart(fig)
     return
 
 def column_barchart(df, column):
     fig_title = df.columns.name + ' ' + column + ' barchart'
-    fig = px.histogram(df, x=column, title=fig_title, color_discrete_sequence= ["navy"], template='plotly_white')
+    fig = px.histogram(df, x=column, title=fig_title, color_discrete_sequence= ["royalblue"], template='plotly_white')
     st.plotly_chart(fig)
     return
 
@@ -58,7 +58,8 @@ def main():
     selected_df = datasets[selectable_elements.index(selected_df_name)]
 
     # Function for plotting graphs is called
-    plot_graphs(selected_df)
+    if st.button("Plot Graphs"):
+      plot_graphs(selected_df)
 
     # Button to prepare dataset
     if st.button("Test on selected dataset"):
@@ -75,10 +76,11 @@ def main():
               return ['color: red' if v > 70 else '' for v in col]
           return ['' for _ in col]
         
+      eval_df = eval_df.round(2)
       eval_df_styled = eval_df.style.apply(style_specific_columns)
         
       # Display eval_df with custom styling
-      st.write(eval_df_styled.round(2))
+      st.write(eval_df_styled)
         
 
 # Run the Streamlit app
