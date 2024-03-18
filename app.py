@@ -78,10 +78,8 @@ def main():
       eval_df_styled = eval_df.style.apply(style_specific_columns)
         
       # Display eval_df with custom styling
-      st.write(eval_df_styled)
+      st.write(eval_df_styled.round(2))
         
-      # Display eval_df
-      #st.dataframe(eval_df)
 
 # Run the Streamlit app
 if __name__ == "__main__":
