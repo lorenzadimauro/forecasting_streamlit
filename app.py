@@ -42,13 +42,16 @@ def plot_graphs(df):
 
 def main():
     st.title("FOG NOWCASTING APP")
-    # Change background color to blue night with white text
     st.markdown(
         """
         <style>
         body {
             color: white;
             background-color: #001F3F;
+        }
+        .stButton>button {
+            color: #001F3F !important;
+            background-color: white !important;
         }
         </style>
         """,
