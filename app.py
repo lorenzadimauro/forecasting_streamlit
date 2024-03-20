@@ -71,7 +71,7 @@ def main():
     if st.button("Plot Graphs"):
       plot_graphs(selected_df)
     
-    st.write('')
+    st.write('\n\n')
     st.write('')
     # Button to prepare dataset
     if st.button("Test on selected dataset"):
