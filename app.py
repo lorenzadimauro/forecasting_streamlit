@@ -73,7 +73,6 @@ def main():
       plot_graphs(selected_df)
     
     st.write('\n\n')
-    st.write('')
     # Button to prepare dataset
     if st.button("Test on selected dataset"):
 
