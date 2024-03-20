@@ -70,7 +70,9 @@ def main():
     # Function for plotting graphs is called
     if st.button("Plot Graphs"):
       plot_graphs(selected_df)
-
+    
+    st.write('')
+    st.write('')
     # Button to prepare dataset
     if st.button("Test on selected dataset"):
 
