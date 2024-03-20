@@ -30,13 +30,8 @@ def column_barchart(df, column):
     return
 
 def plot_graphs(df):
-    num_columns = ['pressure']
-    cat_columns = ['cloud_type']
-
-    for num_col in num_columns:
-        colum_timeseries(df, num_col)
-    for cat_col in cat_columns:
-        column_barchart(df, cat_col)
+    colum_timeseries(df, 'pressure')
+    column_barchart(df, 'cloud_type')
     return
 
 
