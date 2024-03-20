@@ -66,7 +66,8 @@ def main():
     selectable_elements = [df.columns.name for df in datasets]
     selected_df_name = st.selectbox("Select Dataset", selectable_elements)
     selected_df = datasets[selectable_elements.index(selected_df_name)]
-
+    
+    st.write('\n\n\n\n')
     # Function for plotting graphs is called
     if st.button("Plot Graphs"):
       plot_graphs(selected_df)
